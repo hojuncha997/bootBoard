@@ -1,0 +1,43 @@
+plugins {
+    id 'org.springframework.boot' version '2.7.2'
+    id 'io.spring.dependency-management' version '1.0.12.RELEASE'
+    id 'java'
+    id 'war'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly 'org.projectlombok:lombok'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    annotationProcessor 'org.projectlombok:lombok'
+    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    //compile groudp: 'org.mariadb.jdbc', name: 'mariadb-java-client' 책에는 이렇게 쓰여 있다. compile은 depricated되었다.
+    //따라서 아래와 같이 써준다.
+    implementation('org.mariadb.jdbc:mariadb-java-client')
+    implementation('org.thymeleaf.extras:thymeleaf-extras-java8time')
+    // ' : ' 콜론을 띄어 쓰며 오류남.
+
+
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
