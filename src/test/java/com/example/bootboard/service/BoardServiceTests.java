@@ -5,6 +5,7 @@ package com.example.bootboard.service;
 import com.example.bootboard.dto.BoardDTO;
 import com.example.bootboard.dto.PageRequestDTO;
 import com.example.bootboard.dto.PageResultDTO;
+import com.example.bootboard.entity.Board;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,6 +16,7 @@ public class BoardServiceTests {
     @Autowired
     private BoardService boardService;
 
+    //등록 처리 테스트
     @Test
     public void testRegister() {
 
@@ -27,6 +29,7 @@ public class BoardServiceTests {
         Long bno = boardService.register(dto);
     }
 
+    //목록 처리 테스트
     @Test
     public void testList() {
         PageRequestDTO pageRequestDTO = new PageRequestDTO();
@@ -37,4 +40,17 @@ public class BoardServiceTests {
             System.out.println(boardDTO);
         }
     }
+
+    //게시글 조회 처리 테스트
+    @Test
+    public void testGet() {
+        Long bno = 100L;
+
+        BoardDTO boardDTO = boardService.get(bno);
+
+        System.out.println(boardDTO);
+    }
+
+
+
 }

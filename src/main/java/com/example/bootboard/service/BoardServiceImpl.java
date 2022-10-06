@@ -33,6 +33,7 @@ public class BoardServiceImpl implements BoardService {
         return board.getBno();
     }
 
+    //목록처리
     @Override
     public PageResultDTO<BoardDTO, Object[]> getList(PageRequestDTO pageRequestDTO) {
         log.info(pageRequestDTO);
@@ -46,4 +47,16 @@ public class BoardServiceImpl implements BoardService {
 
         return new PageResultDTO<>(result, fn);
     }
+
+    //게시글 조회 처리
+    @Override
+    public BoardDTO get(Long bno) {
+        Object result = repository.getBoardByBno(bno);
+        Object[] arr = (Object[]) result;
+
+        return entityToDTO((Board) arr[0], (Member) arr[1], (Long) arr[2]);
+
+    }
+
+
 }

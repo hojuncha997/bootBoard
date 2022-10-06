@@ -15,6 +15,11 @@ public interface BoardService {
     //getList() : 목록처리
     PageResultDTO<BoardDTO, Object[]> getList(PageRequestDTO pageRequestDTO);
 
+    //조회 처리
+    BoardDTO get(Long bno);
+
+
+
     default Board dtoToEntity(BoardDTO dto) {
         Member member = Member.builder().email(dto.getWriterEmail()).build();
 
