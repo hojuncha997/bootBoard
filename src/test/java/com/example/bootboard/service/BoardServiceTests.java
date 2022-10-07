@@ -51,6 +51,13 @@ public class BoardServiceTests {
         System.out.println(boardDTO);
     }
 
+    //게시글 삭제 처리 테스트
+    @Test
+    public void testRemove(){
+        Long bno = 72L;
+        boardService.removeWithReplies(bno);
+    }
+
 
 
 }

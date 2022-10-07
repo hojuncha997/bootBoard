@@ -18,6 +18,8 @@ public interface BoardService {
     //조회 처리
     BoardDTO get(Long bno);
 
+    //게시글 삭제 기능
+    void removeWithReplies(Long bno);
 
 
     default Board dtoToEntity(BoardDTO dto) {
@@ -48,6 +50,8 @@ public interface BoardService {
 
         return boardDTO;
     }
+
+
 
 }
 
