@@ -25,4 +25,14 @@ public class Board extends BaseEntity{
 
     //Board클래스는 Member클래스의 email(PK)를 FK로 참조하는 구조이다.
 
+    //수정을 위한 메서드
+    //제목 수정
+    public void changeTitle(String title) {
+        this.title = title;
+    }
+    //내용 수정
+    public void changeContent(String content) {
+        this.content = content;
+    }
+
 }

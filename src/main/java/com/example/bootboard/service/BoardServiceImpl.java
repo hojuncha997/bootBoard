@@ -72,8 +72,19 @@ public class BoardServiceImpl implements BoardService {
 
     }
 
+    //게시물 수정처리
+    @Transactional
+    @Override
+    public void modify(BoardDTO boardDTO) {
+        Board board = repository.getReferenceById(boardDTO.getBno());
+        //getOne(), getById()는 depricated됨.
 
+        board.changeTitle(boardDTO.getTitle());
+        board.changeContent(boardDTO.getContent());
 
+        repository.save(board);
+
+    }
 
 
 }

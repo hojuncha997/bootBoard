@@ -9,7 +9,7 @@ import com.example.bootboard.entity.Board;
 import com.example.bootboard.entity.Member;
 
 public interface BoardService {
-
+    //등록처리
     Long register(BoardDTO dto);
 
     //getList() : 목록처리
@@ -20,6 +20,10 @@ public interface BoardService {
 
     //게시글 삭제 기능
     void removeWithReplies(Long bno);
+
+    //수정 처리
+    void modify(BoardDTO boardDTO);
+
 
 
     default Board dtoToEntity(BoardDTO dto) {
