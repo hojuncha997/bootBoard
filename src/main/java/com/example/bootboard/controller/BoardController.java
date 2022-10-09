@@ -46,8 +46,8 @@ public class BoardController {
         return "redirect:/board/list";
     }
 
-    //조회
-    @GetMapping("/read")
+    //조회 + 접근 가능 경로에 /modify (get)를 추가하였다.
+    @GetMapping({"/read", "/modify"})
     public void read(@ModelAttribute("requestDTO") PageRequestDTO pageRequestDTO,
                      Long bno, Model model) {
 
@@ -58,5 +58,36 @@ public class BoardController {
         model.addAttribute("dto", boardDTO);
     }
 
+    //삭제
+    @PostMapping("/remove")
+    public String remove(long bno, RedirectAttributes redirectAttributes) {
+
+        log.info("bno: " + bno);
+
+        boardService.removeWithReplies(bno);
+        redirectAttributes.addFlashAttribute("msg", bno);
+        //삭제 뒤 목록 페이지롱 이동
+        return "redirect:/board/list";
+    }
+
+    //수정(post)
+    @PostMapping("/modify")
+    public String modify(BoardDTO dto
+            , @ModelAttribute("requestDTO") PageRequestDTO requestDTO
+            , RedirectAttributes redirectAttributes) {
+
+        log.info("post modify.................");
+        log.info("dto: " + dto);
+
+        boardService.modify(dto);
+        //모델에 추가
+        redirectAttributes.addAttribute("page", requestDTO.getPage());
+        redirectAttributes.addAttribute("type", requestDTO.getType());
+        redirectAttributes.addAttribute("keyword", requestDTO.getKeyword());
+
+        redirectAttributes.addAttribute("bno", dto.getBno());
+        //수정 뒤 조회 페이지로 이동
+        return "redirect:/board/read";
+    }
 
 }
