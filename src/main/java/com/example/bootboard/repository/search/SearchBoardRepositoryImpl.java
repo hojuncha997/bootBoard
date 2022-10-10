@@ -1,8 +1,15 @@
 package com.example.bootboard.repository.search;
 
 import com.example.bootboard.entity.Board;
+import com.example.bootboard.entity.QBoard;
+import com.example.bootboard.entity.QReply;
+import com.querydsl.jpa.JPQLQuery;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
+
+import java.util.List;
+
+import static com.example.bootboard.entity.QBoard.board;
 
 @Log4j2
 public class SearchBoardRepositoryImpl extends QuerydslRepositorySupport
@@ -16,6 +23,33 @@ public class SearchBoardRepositoryImpl extends QuerydslRepositorySupport
     @Override
     public Board search1(){
         log.info("search1............");
+        //JPQL 사용
+        //이제 로그가 찍힐 뿐만 아니라 아래의 JPQL도 실행된다.
+
+
+        QBoard board = QBoard.board;
+        QReply reply = QReply.reply;
+
+        JPQLQuery<Board> jpqlQuery = from(board);
+        jpqlQuery.leftJoin(reply).on(reply.board.eq(board));
+
+        List<Board> result = jpqlQuery.fetch();
         return null;
     }
+
+
+
+//        //Q도메인의 QBoard
+//        QBoard board = QBoard.board;
+
+//        JPQLQuery<Board> jpqlQuery = from(board);
+//        jpqlQuery.select(board).where(board.bno.eq(3L)); //bno가 3번인 데이터를 select
+//
+//        log.info("------------------------------");
+//        log.info(jpqlQuery);
+//        log.info("------------------------------");
+//
+//        List<Board> result = jpqlQuery.fetch();
+//        return null;
+//    }
 }
