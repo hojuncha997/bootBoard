@@ -4,6 +4,7 @@ package com.example.bootboard.repository;
 
 
 import com.example.bootboard.entity.Board;
+import com.example.bootboard.repository.search.SearchBoardRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,8 +12,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
-
-public interface BoardRepository extends JpaRepository<Board, Long> {
+                    //SearchBoardRepository 인터페이스를 상속
+public interface BoardRepository extends JpaRepository<Board, Long>, SearchBoardRepository {
     // 한 개의 로우(Object) 내에 Object[] 로 나옴
     @Query("select b, w from Board b left join b.writer w where b.bno =:bno")
     Object getBoardWithWriter(@Param("bno") Long bno);
