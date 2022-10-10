@@ -2,7 +2,9 @@ package com.example.bootboard.repository.search;
 
 import com.example.bootboard.entity.Board;
 import com.example.bootboard.entity.QBoard;
+import com.example.bootboard.entity.QMember;
 import com.example.bootboard.entity.QReply;
+import com.querydsl.core.Tuple;
 import com.querydsl.jpa.JPQLQuery;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
@@ -21,21 +23,57 @@ public class SearchBoardRepositoryImpl extends QuerydslRepositorySupport
     }
 
     @Override
-    public Board search1(){
+    public Board search1() {
         log.info("search1............");
         //JPQL 사용
         //이제 로그가 찍힐 뿐만 아니라 아래의 JPQL도 실행된다.
 
-
         QBoard board = QBoard.board;
         QReply reply = QReply.reply;
+        QMember member = QMember.member;
 
         JPQLQuery<Board> jpqlQuery = from(board);
+        jpqlQuery.leftJoin(member).on(board.writer.eq(member));
         jpqlQuery.leftJoin(reply).on(reply.board.eq(board));
 
-        List<Board> result = jpqlQuery.fetch();
+        //집합함수 처리 : groupBy()
+
+        //튜플 사용!!!!!
+        JPQLQuery<Tuple> tuple = jpqlQuery.select(board, member.email, reply.count());
+        tuple.groupBy(board);
+
+//        jpqlQuery.select(board, member.email, reply.count())
+//                .groupBy(board);
+
+        log.info("------------------------------");
+        log.info(tuple); //jpqlQuery -> tuple
+        log.info("------------------------------");
+
+        List<Tuple> result = tuple.fetch();
+//        List<Board> result = jpqlQuery.fetch();
+
+        log.info(result);
+
         return null;
     }
+
+
+
+
+
+
+
+
+//        조인 처리
+//        QBoard board = QBoard.board;
+//        QReply reply = QReply.reply;
+//
+//        JPQLQuery<Board> jpqlQuery = from(board);
+//        jpqlQuery.leftJoin(reply).on(reply.board.eq(board));
+//
+//        List<Board> result = jpqlQuery.fetch();
+//        return null;
+//    }
 
 
 
