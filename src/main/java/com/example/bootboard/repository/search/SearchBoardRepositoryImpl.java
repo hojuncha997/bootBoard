@@ -7,6 +7,8 @@ import com.example.bootboard.entity.QReply;
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.JPQLQuery;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
 import java.util.List;
@@ -59,11 +61,6 @@ public class SearchBoardRepositoryImpl extends QuerydslRepositorySupport
 
 
 
-
-
-
-
-
 //        조인 처리
 //        QBoard board = QBoard.board;
 //        QReply reply = QReply.reply;
@@ -90,4 +87,13 @@ public class SearchBoardRepositoryImpl extends QuerydslRepositorySupport
 //        List<Board> result = jpqlQuery.fetch();
 //        return null;
 //    }
+
+    @Override
+    public Page<Object[]> searchPage(String type, String Keyword, Pageable pageable) {
+        log.info("searchPage............................");
+        return null;
+    }
+
+
+
 }
