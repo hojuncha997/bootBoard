@@ -3,14 +3,20 @@ package com.example.bootboard.repository.search;
 import com.example.bootboard.entity.*;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.Tuple;
+import com.querydsl.core.types.Order;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.JPQLQuery;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.example.bootboard.entity.QBoard.board;
 
@@ -108,13 +114,13 @@ public class SearchBoardRepositoryImpl extends QuerydslRepositorySupport
 
         booleanBuilder.and(expression);
 
-        if(type != null){
+        if (type != null) {
             String[] typeArr = type.split("");
             //검색 조건 작성
             BooleanBuilder conditionBuilder = new BooleanBuilder();
 
-            for(String t:typeArr) {
-                switch (t){
+            for (String t : typeArr) {
+                switch (t) {
                     case "t":
                         conditionBuilder.or(board.title.contains(keyword));
                         break;
@@ -130,16 +136,38 @@ public class SearchBoardRepositoryImpl extends QuerydslRepositorySupport
         }
 
         tuple.where(booleanBuilder);
+
+        //Order by : sort
+        Sort sort = pageable.getSort();
+
+        //tuple.orderBy(board.bno.desc());
+
+        sort.stream().forEach(order -> {
+            Order direction = order.isAscending() ? Order.ASC : Order.DESC;
+            String prop = order.getProperty();
+
+            PathBuilder orderByExpression = new PathBuilder(Board.class, "board");
+
+            tuple.orderBy(new OrderSpecifier(direction, orderByExpression.get(prop)));
+        });
+
         tuple.groupBy(board);
+
+        //page처리
+        tuple.offset(pageable.getOffset());
+        tuple.limit(pageable.getPageSize());
 
         List<Tuple> result = tuple.fetch();
 
         log.info(result);
+        
+        //count얻기
+        long count = tuple.fetchCount();
+        log.info("COUNT: " + count);
 
-        return null;
+        return new PageImpl<Object[]>(
+                result.stream().map(t -> t.toArray())
+                        .collect(Collectors.toList()), pageable, count);
 
     }
-
-
-
 }
