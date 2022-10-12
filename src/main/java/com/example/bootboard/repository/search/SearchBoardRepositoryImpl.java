@@ -1,5 +1,8 @@
 package com.example.bootboard.repository.search;
 
+import com.example.bootboard.dto.BoardDTO;
+import com.example.bootboard.dto.PageRequestDTO;
+import com.example.bootboard.dto.PageResultDTO;
 import com.example.bootboard.entity.*;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.Tuple;
@@ -170,4 +173,7 @@ public class SearchBoardRepositoryImpl extends QuerydslRepositorySupport
                         .collect(Collectors.toList()), pageable, count);
 
     }
+
+
+
 }
