@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.swing.text.html.Option;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
@@ -45,4 +46,14 @@ public class ReplyRepositoryTests {
         System.out.println(reply);
         System.out.println(reply.getBoard());
     }
+
+    @Test
+    public void testListByBoard(){
+        List<Reply> replyList = replyRepository.getRepliesByBoardOrderByRno(
+                Board.builder().bno(3L).build());
+
+        replyList.forEach(reply -> System.out.println(reply));
+    }
+
+
 }
